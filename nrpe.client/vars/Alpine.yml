@@ -1,0 +1,17 @@
+---
+
+nrpeclient_packages:
+  - nrpe
+  - nagios-plugins
+  - acl
+  - ca-certificates
+
+nrpeclient_conf: /etc/nrpe.cfg
+nrpeclient_confdir: /etc/nrpe.d
+nrpe_svc: nrpe
+np: /usr/lib/nagios/plugins
+
+perl_bin: /usr/bin/perl
+
+nrpeclient_openntpd_conf: /etc/ntpd.conf
+

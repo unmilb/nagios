@@ -1,0 +1,85 @@
+---
+#nrpeclient_type: nagios
+nrpeclient_type: icinga2
+nrpeclient_server: ansible_fqdn_servername
+## if want to input a specific hostname, IP address, ...
+#nrpeclient_hostname: "{{ ansible_fqdn }}"
+nrpeclient_hostname: "{{ inventory_hostname }}"
+## if you are on the server itself so we are using localhost
+#nrpeclient_hostname: 127.0.0.1
+
+## if needed for icinga2 satellite/hosts
+#nrpeclient_if: eth0
+
+## / can be a catchall so better to put device
+##  Ensure it is defined in local-nrpe.cfg
+nrpeclient_partitionroot: sda1
+nrpeclient_partitionboot: sda2
+## for icinga2
+#nrpeclient_group: Group1
+#nrpeclient_checkcommand: hostalive
+#nrpeclient_checkcommand: tcp
+#nrpeclient_parent: tcp
+
+## nrpe bind restriction (only accept one IP)
+#nrpeclient_nrpebind: '192.168.250.10'
+## nrpe allowed hosts
+nrpeclient_nrpeserver: '192.168.109.143'
+nrpeclient_nrpeconf: /etc/nagios/nrpe.cfg
+nrpeclient_nrpe_users_w: 15
+nrpeclient_nrpe_users_c: 20
+nrpeclient_nrpe_total_procs_w: 300
+nrpeclient_nrpe_total_procs_c: 350
+nrpeclient_nrpe_count_crash_w: 5
+nrpeclient_nrpe_count_crash_c: 50
+nrpeclient_nrpe_count_log_w: 10:1000
+nrpeclient_nrpe_count_log_c: 5:2000
+nrpeclient_nrpe_size_log_w: 1000000
+nrpeclient_nrpe_size_log_c: 1500000
+nrpeclient_nrpe_count_tmp_w: 0:150
+nrpeclient_nrpe_count_tmp_c: 0:200
+nrpeclient_nrpe_size_tmp_w: 300000
+nrpeclient_nrpe_size_tmp_c: 500000
+nrpeclient_watched_backupdir: /var/_backup/
+## last update time 2w, 6w
+nrpclient_backuptime_w: 1209600
+nrpclient_backuptime_c: 3888000
+## last update time 3h, 24h
+#nrpclient_backuptime_w: 10800
+#nrpclient_backuptime_c: 86400
+
+nrpeclient_add_to_etchosts: true
+
+nrpeclient_watch_swap: true
+nrpeclient_watch_ntp: true
+nrpeclient_watch_aidehids: true
+nrpeclient_watch_sysstat: true
+nrpeclient_watch_supervisor: false
+monitor_mailq_postfix: true
+monitor_sensors: false
+
+## to remove server configuration only (use 'gather_facts: False' to avoid online check)
+#nrpeclient_remove: true
+
+nrpeclient_extra_plugins:
+  - { u: 'https://raw.githubusercontent.com/jasonhancock/nagios-memory/master/plugins/check_mem', d: 'check_mem', checksum: 'sha256:42b5ce12e9b3264c1cfcd0825f4df5401c0009eb9d19413739258eee9ccf200b' }
+  - { u: 'https://raw.githubusercontent.com/justintime/nagios-plugins/master/check_mem/check_mem.pl', d: 'check_mem.pl', checksum: 'sha256:934141389dd045adf7f20e4be31db179a65a95c7e75c44847eed42740ab76cdd' }
+  - { u: 'https://raw.githubusercontent.com/nickanderson/check-sar-perf/master/check_sar_perf.py', d: 'check_sar_perf.py', checksum: 'sha256:eb17903dfa1d00f9159562a4aae6e32e6450ad6e02dd522cc96af1137ff01404' }
+  - { u: 'https://raw.githubusercontent.com/thehunmonkgroup/nagios-plugin-file-ages-in-dirs/master/check_file_ages_in_dirs', d: 'check_file_ages_in_dirs', checksum: 'sha256:9c8102f8b741e7f05e7e7a0448586577862fb8db7f364e56fb96e597def29235' }
+  - { u: 'https://raw.githubusercontent.com/thehunmonkgroup/nagios-plugin-newest-file-age/master/check_newest_file_age', d: 'check_newest_file_age', checksum: 'sha256:2ffaa0b9d4435c546976fc1cb7631a7efc087c07d4b7489a2b4dc2b3c77f59bd' }
+  - { u: 'https://agir.april.org/projects/admins/repository/revisions/master/raw/puppetmaster/modules/april_nagios/files/check_oom_killer', d: 'check_oom_killer', checksum: 'sha256:7dc5bce1c9130c29bc663410d3e65c9f4bc36e60ef06bf86b1cb9d4865ee7b62' }
+#  - { u: '', d: '', checksum: 'sha256:aaaa' }
+
+nrpeclient_icinga2_extra_vars: []
+nrpeclient_icinga2_extra_ssh_vars: []
+#nrpeclient_icinga2_extra_ssh_vars:
+#  - vars.ssh_port = 1023
+
+nrpeclient_disks_smart: []
+nrpeclient_disks_smartdb_json: ''
+#nrpeclient_disks_smart: [ 'sda', 'sdb' ]
+#nrpeclient_disks_smartdb_json: 'files/check_smartdb.json'
+
+nrpeclient_osx_smc: '-r TC0D,F0Ac -w 85,3800 -c 100,5200 -s c'
+nrpeclient_osx_launchd_preset_exceptions: 'com.apple.printuitool.agent,com.apple.coreservices.appleid.authentication,com.apple.afpstat-qfa,com.apple.mrt.uiagent,com.apple.printtool.agent,com.apple.accountsd,com.apple.xprotectupdater,com.apple.pfctl,com.apple.applessdstatistics,com.apple.iconservices.iconservicesagent,com.apple.nehelper,com.apple.logd,com.apple.tccd.system,com.apple.ctkd,com.apple.awdd,com.apple.secinitd,com.apple.iconservices.iconservicesd,com.apple.periodic-weekly,com.apple.nsurlstoraged,com.apple.periodic-daily,com.apple.audio.systemsoundserverd,com.apple.AccountPolicyHelper,com.apple.icloud.findmydeviced,com.apple.wdhelper,com.apple.systemadministration.writeconfig,com.apple.emond.aslmanager,com.apple.xpc.smd,com.apple.spindump,com.apple.AmbientDisplayAgent,com.apple.ifdreader,com.apple.coresymbolicationd,com.apple.diagnosticd,com.apple.softwareupdated,com.apple.MobileFileIntegrity,com.apple.sandboxd,com.apple.CodeSigningHelper,com.apple.sysmond,com.apple.networkd_privileged,com.apple.installd,com.apple.nsurlsessiond_privileged,com.apple.aslmanager,com.apple.systemstatsd,com.apple.PerformanceAnalysis.animationperfd,com.apple.cache_delete,com.apple.GameController.gamecontrollerd,com.apple.csrutil.report,com.apple.system_installd,com.apple.softwareupdate_download_service,com.github.dnscrypt-osxclient.DNSCryptConsoleChange'
+
